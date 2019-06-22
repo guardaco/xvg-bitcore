@@ -19,10 +19,3 @@ services:
       - DB_HOST=database
       - BWS_MONGODB_URI=mongodb://host.docker.internal:27017/bws
     env_file: .env
-
-#insight:
-  #image: insight
-  #links:
-    #- bitcore-node
-  #environment:
-    #- API_URL=bitcore-node
