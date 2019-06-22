@@ -64,8 +64,6 @@ whitelist=127.0.0.1
 txindex=0
 listen=1
 server=1
-irc=1
-upnp=1
 
 # Make sure port & rpcport matches the 
 # bitcore.config.json ports for XVG mainnet
@@ -98,6 +96,16 @@ rpcpassword=RPCPASS
 
 ```sh
 npm run node
+```
+
+### 5. Using Docker for Bitcore
+
+```sh
+cp .env.example .env
+
+docker-compose up -d --build
+# or if you don't need to build the images.
+docker-compose up -d
 ```
 
 ## Applications
