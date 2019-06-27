@@ -60,7 +60,6 @@ npm install
 <summary><b> Example Verge Mainnet Config </b></summary>
 
 ```sh
-whitelist=127.0.0.1
 txindex=0
 listen=1
 server=1
@@ -73,7 +72,6 @@ server=1
 
 port=21102
 rpcport=20102
-rpcallowip=127.0.0.1
 
 rpcuser=RPCUSER
 rpcpassword=RPCPASS
