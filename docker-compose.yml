@@ -15,6 +15,7 @@ services:
     ports:
       - 3000:3000
       - 3232:3232
+      - 3380:3380
     environment:
       - DB_HOST=database
       - BWS_MONGODB_URI=mongodb://host.docker.internal:27017/bws

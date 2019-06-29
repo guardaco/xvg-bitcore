@@ -31,6 +31,7 @@ BlockchainMonitor.prototype.start = function(opts, cb) {
       self.explorers = {
         btc: {},
         bch: {},
+        xvg: {},
       };
 
       var coinNetworkPairs = [];

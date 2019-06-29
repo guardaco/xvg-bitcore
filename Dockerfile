@@ -23,4 +23,5 @@ COPY .env.example .env
 COPY bitcore-docker.config.json bitcore.config.json
 EXPOSE 3000
 EXPOSE 3232
+EXPOSE 3380
 CMD npm run bws && npm run node
