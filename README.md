@@ -96,6 +96,8 @@ rpcpassword=RPCPASS
 npm run node
 ```
 
+If you'd like to use Docker go to [the docker manual](https://github.com/vergecurrency/bitcore/blob/master/Docker.md).
+
 ## Applications
 
 - [Bitcore Node](https://github.com/bitpay/bitcore/tree/master/packages/bitcore-node) - A full node with extended capabilities using Bitcoin Core
