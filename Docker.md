@@ -51,4 +51,4 @@ The setup containers will expose the following ports on localhost:
 For production you can use Nginx with reverse proxies to expose the served services to the web over port `80`.
 
 ## MongoDB Data
-Letting the bitcore-node sync can take up to 4 full days depending on your internet connection, system performance and block height. To get a huge part of all the blocks you can [download a zip archive](http://staging.swenvzanten.com/bitcore-database-latest.zip) with a mongoDB database and place the content in the `/data` directory of this repository.
+Letting the bitcore-node sync can take up to 4 full days depending on your internet connection, system performance and block height. To get a huge part of all the blocks you can [download a zip archive](http://staging.swenvanzanten.com/bitcore-database-latest.zip) with a mongoDB database and place the content in the `/data` directory of this repository.
