@@ -34,10 +34,10 @@ var config = {
     xvg: {
       livenet: {
         provider: 'v8',
-        url: 'http://localhost:3000'
+        url: process.env.BWS_NODE_URL || 'http://localhost:3000'
       },
       testnet: {
-        url: 'http://localhost:3000',
+        url: process.env.BWS_NODE_URL || 'http://localhost:3000',
         regtestEnabled: false
       },
     },
