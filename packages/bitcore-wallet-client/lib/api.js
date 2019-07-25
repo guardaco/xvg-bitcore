@@ -7,7 +7,7 @@ var async = require('async');
 var events = require('events');
 var Bitcore = require('bitcore-lib');
 var Bitcore_ = {
-  btc: Bitcore,
+  xvg: Bitcore,
   bch: require('bitcore-lib-cash'),
 };
 var Mnemonic = require('bitcore-mnemonic');
@@ -1060,7 +1060,7 @@ API.prototype.createWallet = function(walletName, copayerName, m, n, opts, cb) {
   opts = opts || {};
 
   var coin = opts.coin || 'btc';
-  if (!_.includes(['btc', 'bch'], coin)) return cb(new Error('Invalid coin'));
+  if (!_.includes(['btc', 'bch', 'xvg'], coin)) return cb(new Error('Invalid coin'));
 
   var network = opts.network || 'livenet';
   if (!_.includes(['testnet', 'livenet'], network)) return cb(new Error('Invalid network'));
@@ -1141,7 +1141,7 @@ API.prototype.joinWallet = function(secret, copayerName, opts, cb) {
   opts = opts || {};
 
   var coin = opts.coin || 'btc';
-  if (!_.includes(['btc', 'bch'], coin)) return cb(new Error('Invalid coin'));
+  if (!_.includes(['btc', 'bch', 'xvg'], coin)) return cb(new Error('Invalid coin'));
 
   try {
     var secretData = API.parseSecret(secret);
@@ -1636,7 +1636,7 @@ API.prototype.getBalance = function(opts, cb) {
 
   var args = [];
   if (opts.coin) {
-    if (!_.includes(['btc', 'bch'], opts.coin)) return cb(new Error('Invalid coin'));
+    if (!_.includes(['btc', 'bch', 'xvg'], opts.coin)) return cb(new Error('Invalid coin'));
     args.push('coin=' + opts.coin);
   }
   var qs = '';
@@ -1844,7 +1844,7 @@ API.signTxProposalFromAirGapped = function(key, txp, unencryptedPkr, m, n, opts)
   opts = opts || {}
 
   var coin = opts.coin || 'btc';
-  if (!_.includes(['btc', 'bch'], coin)) return cb(new Error('Invalid coin'));
+  if (!_.includes(['btc', 'bch', 'xvg'], coin)) return cb(new Error('Invalid coin'));
 
   var publicKeyRing = JSON.parse(unencryptedPkr);
 
