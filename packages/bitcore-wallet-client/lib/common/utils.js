@@ -7,7 +7,7 @@ var Stringify = require('json-stable-stringify');
 
 var Bitcore = require('bitcore-lib');
 var Bitcore_ = {
-  btc: Bitcore,
+  xvg: Bitcore,
   bch: require('bitcore-lib-cash'),
 };
 var PrivateKey = Bitcore.PrivateKey;
