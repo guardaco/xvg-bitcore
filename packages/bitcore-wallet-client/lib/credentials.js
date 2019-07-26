@@ -49,7 +49,7 @@ function Credentials() {
 };
 
 function _checkCoin(coin) {
-  if (!_.includes(['btc', 'bch'], coin)) throw new Error('Invalid coin');
+  if (!_.includes(['btc', 'bch', 'xvg'], coin)) throw new Error('Invalid coin');
 };
 
 function _checkNetwork(network) {

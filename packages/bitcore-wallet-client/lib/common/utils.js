@@ -7,14 +7,14 @@ var Stringify = require('json-stable-stringify');
 
 var Bitcore = require('bitcore-lib');
 var Bitcore_ = {
-  btc: Bitcore,
+  xvg: Bitcore,
   bch: require('bitcore-lib-cash'),
 };
 var PrivateKey = Bitcore.PrivateKey;
 var PublicKey = Bitcore.PublicKey;
 var crypto = Bitcore.crypto;
 var encoding = Bitcore.encoding;
-
+var Stealth = require('bitcore-stealth');
 var Constants = require('./constants');
 var Defaults = require('./defaults');
 
@@ -216,7 +216,8 @@ Utils.buildTx = function(txp) {
 
   var bitcore = Bitcore_[coin];
 
-  var t = new bitcore.Transaction();
+  var t = new Stealth.Transaction();
+  t.timestamp = txp.timestamp;
 
   $.checkState(_.includes(_.values(Constants.SCRIPT_TYPES), txp.addressType));
 
@@ -237,12 +238,12 @@ Utils.buildTx = function(txp) {
     _.each(txp.outputs, function(o) {
       $.checkState(o.script || o.toAddress, 'Output should have either toAddress or script specified');
       if (o.script) {
-        t.addOutput(new bitcore.Transaction.Output({
+        t.addOutput(bitcore.Transaction.Output({
           script: o.script,
           satoshis: o.amount
         }));
       } else {
-        t.to(o.toAddress, o.amount);
+        t.to(o.toAddress, o.amount, o.ephemeralPrivKey, o.stealth);
       }
     });
   }
