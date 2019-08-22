@@ -93,14 +93,14 @@ Utils.getClient = function(args, opts, cb) {
   opts = opts || {};
 
   var filename = args.file || process.env['WALLET_FILE'] || process.env['HOME'] + '/.wallet.dat';
-  var host = args.host || process.env['BWS_HOST'] || 'https://bws.bitpay.com/';
+  var host = args.host || process.env['VWS_HOST'] || 'https://vws.vergecurrency.network/';
 
   var storage = new FileStorage({
     filename: filename,
   });
 
   var client = new Client({
-    baseUrl: url.resolve(host, '/bws/api'),
+    baseUrl: url.resolve(host, '/vws/api'),
     verbose: args.verbose,
     supportStaffWalletId: opts.walletId,
     timeout: 20 * 60 * 1000,
@@ -222,7 +222,7 @@ Utils.findOneTxProposal = function(txps, id) {
 };
 
 Utils.UNITS2 = {
-  'btc': 100000000,
+  'xvg': 1000000,
   'bit': 100,
   'sat': 1,
 };
@@ -235,7 +235,7 @@ Utils.parseAmount = function(text) {
   var match = new RegExp(regex, 'i').exec(text.trim());
 
   if (!match || match.length === 0) {
-    Utils.die('Invalid amount: ' + text);
+    throw new Error('Invalid amount: ' + text);
   }
 
   var amount = parseFloat(match[1]);
@@ -244,12 +244,12 @@ Utils.parseAmount = function(text) {
   var unit = (match[3] || 'sat').toLowerCase();
   var rate = Utils.UNITS2[unit];
   if (!rate) {
-    Utils.die('Invalid unit: ' + unit);
+    throw new Error('Invalid unit: ' + unit);
   }
 
   var amountSat = parseFloat((amount * rate).toPrecision(12));
   if (amountSat != Math.round(amountSat)) {
-    Utils.die('Invalid amount: ' + amount + ' ' + unit);
+    throw new Error('Invalid amount: ' + amount + ' ' + unit);
   }
 
   return amountSat;
@@ -272,11 +272,11 @@ Utils.COIN = {
     maxDecimals: 8,
     minDecimals: 8,
   },
-  btc: {
-    name: 'btc',
-    toSatoshis: 100000000,
-    maxDecimals: 8,
-    minDecimals: 8,
+  xvg: {
+    name: 'xvg',
+    toSatoshis: 1000000,
+    maxDecimals: 6,
+    minDecimals: 6,
   },
   bit: {
     name: 'bit',
@@ -317,8 +317,8 @@ Utils.renderAmount = function(satoshis, coin, opts) {
 
   opts = opts || {};
 
-  var coin = coin || 'btc';
-  var u = Utils.COIN[coin] || Utils.COIN.btc;
+  var coin = coin || 'xvg';
+  var u = Utils.COIN[coin] || Utils.COIN.xvg;
   var amount = clipDecimals((satoshis / u.toSatoshis), u.maxDecimals).toFixed(u.maxDecimals);
   return addSeparators(amount, opts.thousandsSeparator || ',', opts.decimalSeparator || '.', u.minDecimals) + ' ' + u.name;
 };

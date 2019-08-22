@@ -8,13 +8,13 @@ program = utils.configureCommander(program);
 
 program
   .option('-t, --testnet', 'Create a Testnet Extended Private Key')
-  .option('-c, --coin <coin>', 'coin (btc/bch)')
+  .option('-c, --coin <coin>', 'coin (xvg/bch)')
   .option('-p, --password', 'Encrypt wallet. Will ask password interactively')
   .parse(process.argv);
 
 var args = program.args;
 var network = program.testnet ? 'testnet' : 'livenet';
-var coin = program.coin ? 'btc' : 'bch';
+var coin = program.coin ? 'xvg' : 'bch';
 utils.getClient(program, { doNotComplete: true, mustBeNew: true },  function (client) {
   client.seedFromRandom({network:network, coin:coin});
   utils.saveClient(program, client, function () {
