@@ -14,3 +14,4 @@ Session.vim
 .netrwhist
 *~
 data/
+nginx/cache/
