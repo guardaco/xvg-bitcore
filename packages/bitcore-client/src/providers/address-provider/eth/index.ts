@@ -25,13 +25,7 @@ export class EthDeriver implements IDeriver {
   }
 
   addressFromPublicKeyBuffer(pubKey: Buffer): string {
-    const ecKey = secp.keyFromPublic(pubKey);
-    const ecPub = ecKey.getPublic().toJSON();
-    const paddedBuffer = Buffer.concat([
-      this.padTo32(new Buffer(ecPub[0].toArray())),
-      this.padTo32(new Buffer(ecPub[1].toArray()))
-    ]);
-    return `0x${pubToAddress(paddedBuffer).toString('hex')}`;
+    return '';
   }
 
   derivePrivateKey(network, xPriv, addressIndex, isChange) {
