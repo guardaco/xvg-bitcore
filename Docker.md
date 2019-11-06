@@ -33,7 +33,9 @@ rpcpassword=RPCPASS
 ### 3. Start Bitcore Using Docker
 
 ```sh
-cp .env.example .env
+cp .env.example .env (Linux & MacOS/OS X)
+
+copy .env.example .env (Windows)
 
 docker-compose up
 ```
