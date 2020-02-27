@@ -19,7 +19,7 @@ function builder(options) {
   options.BlockHeader = options.BlockHeader || bitcore.BlockHeader;
   options.Transaction = options.Transaction || bitcore.Transaction;
   options.MerkleBlock = options.MerkleBlock || bitcore.MerkleBlock;
-  options.protocolVersion = options.protocolVersion || 90001;
+  options.protocolVersion = options.protocolVersion || 90008;
 
   var exported = {
     constructors: {
@@ -52,11 +52,14 @@ function builder(options) {
       alert: 'Alert',
       reject: 'Reject',
       merkleblock: 'MerkleBlock',
+      feefilter: 'FeeFilter',
       filterload: 'FilterLoad',
       filteradd: 'FilterAdd',
       filterclear: 'FilterClear',
       getblocks: 'GetBlocks',
       getheaders: 'GetHeaders',
+      sendheaders: 'SendHeaders',
+      sendcmpct: 'SendCmpct',
       mempool: 'MemPool',
       getaddr: 'GetAddr'
     },
