@@ -93,6 +93,7 @@ rpcpassword=RPCPASS
 ### 4. Start Bitcore
 
 ```sh
+npm run bootstrap  (if you are using ubuntu 18.04 you will need to do this)
 npm run node
 ```
 
