@@ -40,7 +40,7 @@ services:
       - 3232:3232
       - 3380:3380
     environment:
-      - BWS_MONGODB_URI=mongodb://database:27017/bws
+      - BWS_MONGODB_URL=mongodb://database:27017/vws
       - BWS_NODE_URL=http://host.docker.internal:3000
     env_file: .env
     restart: always

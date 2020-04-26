@@ -1,6 +1,21 @@
 {
   "bitcoreNode": {
     "pruneSpentScripts": true,
+    "services": {
+      "api": {
+        "wallets": {
+          "allowCreationBeforeCompleteSync": true
+        },
+        "rateLimiter": {
+          "disabled": false,
+          "whitelist": [
+            "::ffff:127.0.0.1",
+            "::1",
+            "bitcore-wallet-service"
+          ]
+        }
+      }
+    },
     "chains": {
       "XVG": {
         "mainnet": {
