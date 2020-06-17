@@ -60,6 +60,39 @@ export class InternalStateProvider implements CSP.IChainStateService {
     Storage.apiStreamingFind(CoinStorage, query, {}, req, res);
   }
 
+  async getAddressTransactions(params: CSP.StreamAddressUtxosParams) {
+    const query = this.getAddressQuery(params);
+    let coins = await CoinStorage.collection
+      .find(query).addCursorFlag('noCursorTimeout', true).toArray();
+    const txids = new Set();
+    coins.forEach((coin) => {
+      txids.add(coin.mintTxid);
+      if (coin.spentTxid) {
+        txids.add(coin.spentTxid);
+      }
+    });
+    const tip = await this.getLocalTip(params);
+    const tipHeight = tip ? tip.height : 0;
+    const txQuery = {txid: {$in: Array.from(txids)}};
+    const coinQuery = {$or: [{mintTxid: { $in: Array.from(txids)}}, {spentTxid: { $in: Array.from(txids)}}]}
+    const txsPr = TransactionStorage.collection.find(txQuery).toArray();
+    const inputsOutsPr = CoinStorage.collection.find(coinQuery).toArray();
+    const [txs, inputsOuts] = await Promise.all([txsPr, inputsOutsPr]);
+    const mapedTxs = txs.map((tx) => {
+      let confirmations = 0;
+      if (tx.blockHeight && tx.blockHeight >= 0) {
+        confirmations = tipHeight - tx.blockHeight + 1;
+
+      }
+      const vin = inputsOuts.filter(inOut => inOut.spentTxid === tx.txid)
+      const vout = inputsOuts.filter(inOut => inOut.mintTxid === tx.txid)
+      const convertedTx = TransactionStorage._apiTransform(tx, { object: true }) as TransactionJSON;
+      return { ...convertedTx, confirmations: confirmations, vout, vin };
+    });
+
+    return mapedTxs;
+  }
+
   async getBalanceForAddress(params: CSP.GetBalanceForAddressParams) {
     const { chain, network, address } = params;
     const query = {
@@ -187,14 +220,19 @@ export class InternalStateProvider implements CSP.IChainStateService {
     let query = { chain: chain, network, txid: txId };
     const tip = await this.getLocalTip(params);
     const tipHeight = tip ? tip.height : 0;
-    const found = await TransactionStorage.collection.findOne(query);
-    if (found) {
-      let confirmations = 0;
-      if (found.blockHeight && found.blockHeight >= 0) {
-        confirmations = tipHeight - found.blockHeight + 1;
-      }
-      const convertedTx = TransactionStorage._apiTransform(found, { object: true }) as TransactionJSON;
-      return { ...convertedTx, confirmations: confirmations };
+    const txPr = TransactionStorage.collection.findOne(query);
+    const coinQuery = {$or: [{mintTxid: { $in: [txId]}}, {spentTxid: { $in: [txId]}}]}
+    const inputsOutsPr = CoinStorage.collection.find(coinQuery).toArray();
+    const [foundTx, inputsOuts] = await Promise.all([txPr, inputsOutsPr]);
+    if (foundTx) {
+      const convertedTx = TransactionStorage._apiTransform(foundTx, { object: true }) as TransactionJSON;
+        let confirmations = 0;
+        if (foundTx.blockHeight && foundTx.blockHeight >= 0) {
+          confirmations = tipHeight - foundTx.blockHeight + 1;
+        }
+        const vin = inputsOuts.filter(inOut => inOut.spentTxid === foundTx.txid)
+        const vout = inputsOuts.filter(inOut => inOut.mintTxid === foundTx.txid)
+        return { ...convertedTx, confirmations: confirmations, vout, vin };
     } else {
       return undefined;
     }

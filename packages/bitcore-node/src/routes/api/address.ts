@@ -2,7 +2,7 @@ import express = require('express');
 const router = express.Router({ mergeParams: true });
 import { ChainStateProvider } from '../../providers/chain-state';
 
-router.get('/:address/txs',  function(req, res) {
+router.get('/:address/txs',  async function(req, res) {
   let { address, chain, network } = req.params;
   let { unspent, limit = 10 } = req.query;
   let payload = {
@@ -13,7 +13,17 @@ router.get('/:address/txs',  function(req, res) {
     res,
     args: { unspent, limit }
   };
-  ChainStateProvider.streamAddressTransactions(payload);
+  if (unspent) {
+    ChainStateProvider.streamAddressTransactions(payload);
+    return;
+  } else {
+    try {
+      let result = await ChainStateProvider.getAddressTransactions(payload);
+      return res.send(result || []);
+    } catch (err) {
+      return res.status(500).send(err);
+    }
+  }
 });
 
 router.get('/:address',  function(req, res) {
