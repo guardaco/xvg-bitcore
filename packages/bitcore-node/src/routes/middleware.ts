@@ -78,7 +78,7 @@ export function RateLimiter(method: string, perSecond: number, perMinute: number
       const rateLimiter = Config.for('api').rateLimiter;
       const whitelist = rateLimiter && rateLimiter.whitelist;
       const isDisabled = rateLimiter && rateLimiter.disabled;
-      if ( isDisabled || isWhiteListed(whitelist, identifier)) {
+      if ( true || isDisabled || isWhiteListed(whitelist, identifier)) {
         return next();
       }
       let [perSecondResult, perMinuteResult, perHourResult] = await RateLimitStorage.incrementAndCheck(
