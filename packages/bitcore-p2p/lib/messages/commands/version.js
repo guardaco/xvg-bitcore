@@ -52,13 +52,13 @@ VersionMessage.prototype.setPayload = function(payload) {
   this.addrMe = {
     time: parser.readUInt32LE(),
     services: parser.readUInt64LEBN(),
-    ip: this.version < 90009 ? utils.parseIP(parser) : parser.read(41),
+    ip: this.version < 90010 ? utils.parseIP(parser) : parser.read(41),
     port: parser.readUInt16BE()
   };
   this.addrYou = {
     time: parser.readUInt32LE(),
     services: parser.readUInt64LEBN(),
-    ip: this.version < 90009 ? utils.parseIP(parser) : parser.read(41),
+    ip: this.version < 90010 ? utils.parseIP(parser) : parser.read(41),
     port: parser.readUInt16BE()
   };
   this.nonce = parser.read(8);
