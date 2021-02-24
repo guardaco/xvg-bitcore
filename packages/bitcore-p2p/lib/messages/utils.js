@@ -34,7 +34,7 @@ module.exports = utils = {
   },
   writeAddr: function writeAddr(addr, bw) {
     if (_.isUndefined(addr)) {
-      var pad = new Buffer(Array(30));
+      var pad = new Buffer(Array(55));
       bw.write(pad);
       return;
     }
@@ -51,21 +51,10 @@ module.exports = utils = {
     });
   },
   parseIP: function parseIP(parser) {
-    var ipv6 = [];
-    var ipv4 = [];
-    for (var a = 0; a < 8; a++) {
-      var word = parser.read(2);
-      ipv6.push(word.toString('hex'));
-      if (a >= 6) {
-        ipv4.push(word[0]);
-        ipv4.push(word[1]);
-      }
-    }
-    ipv6 = ipv6.join(':');
-    ipv4 = ipv4.join('.');
     return {
-      v6: ipv6,
-      v4: ipv4
+      tor: parser.read(41),
+      v6: '',
+      v4: ''
     };
   },
   parseAddr: function parseAddr(parser) {
